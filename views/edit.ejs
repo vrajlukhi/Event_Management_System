@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <%- include("nav") %>
+    
+    <form method="post" action="/Event/<%= event._id %>?_method=PATCH">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="<%= event.title %>" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required><%= event.description %></textarea>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" value="<%= event.date.toISOString().split('T')[0] %>" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="<%= event.location %>" required>
+
+        <label for="maxAttendees">Max Attendees:</label>
+        <input type="number" id="maxAttendees" name="maxAttendees" value="<%= event.maxAttendees %>" required>
+
+        <button type="submit">Update Event</button>
+    </form>
+</body>
+</html>

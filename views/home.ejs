@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+      }
+      .div{
+        
+        padding: 20px;
+      }
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        max-width: 600px;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+      input, button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      button {
+        
+        color: black;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .event-list {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 20px;
+      }
+      .event-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: calc(100% - 40px);
+        max-width: 400px;
+      }
+      .event-card img {
+        width: 100%;
+        height: 300px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+      .event-card h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+      .event-card p {
+        margin-bottom: 10px;
+      }
+      .event-card button {
+      
+        color: black;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+      
+      .edit-delete-buttons {
+        display: flex;
+        gap: 10px;
+      }
+      .edit-delete-buttons a {
+        text-decoration: none;
+        color: white;
+        padding: 10px;
+        display: block;
+        background-color: #ffc107;
+        text-align: center;
+        border-radius: 5px;
+      }
+      .edit-delete-buttons a:hover {
+        background-color: #e0a800;
+      }
+      .edit-delete-buttons form button {
+        background-color: #dc3545;
+      }
+      .edit-delete-buttons form button:hover {
+        background-color: #c82333;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include("nav") %>
+
+   <div class="div">
+    <form method="GET" action="/event/home">
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" />
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" placeholder="Enter location" />
+
+      <button type="submit">Filter</button>
+    </form>
+
+    <div class="event-list">
+      <% data.forEach(event => { %>
+      <div class="event-card">
+        <h2><%= event.title %></h2>
+        <img src="/uploads/<%= event.imageUrl %>" alt="Event Image" />
+        <p><%= event.description %></p>
+        <p>Date: <%= event.date.toDateString() %></p>
+        <p>Attendees: <%= event.attendees.length %> / <%= event.maxAttendees %></p>
+
+        <% if (event.attendees.length < event.maxAttendees) { %>
+        <form action="/Event/RSPV/<%= event._id %>" method="post">
+          <button type="submit">RSVP</button>
+        </form>
+        <% } else { %>
+        <p>Event is full!</p>
+        <% } %>
+
+        <div class="edit-delete-buttons">
+          <button><a href="/Event/<%= event._id %>/edit">Edit</a></button>
+          <form action="/Event/<%= event._id %>?_method=DELETE" method="post">
+            <button type="submit">Delete</button>
+          </form>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+   </div>
+  </body>
+</html>
