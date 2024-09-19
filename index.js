@@ -16,6 +16,9 @@ app.set("views",(__dirname+"/views"))
 app.use(cookie())
 app.use(methodoverride("_method"))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.get("/",(req,res)=>{
+    res.redirect("/user/signup")
+})
 app.use("/user",URoute)
 app.use("/event",ERoute)
 
